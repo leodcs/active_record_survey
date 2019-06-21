@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActiveRecordSurvey
-	VERSION = "0.1.49"
+  VERSION = '0.1.49'
 end

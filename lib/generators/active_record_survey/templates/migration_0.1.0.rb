@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-class AddActiveRecordSurvey < ActiveRecord::Migration
+class AddActiveRecordSurvey < ActiveRecord::Migration[4.2]
   def self.up
     create_table :active_record_surveys do |t|
       t.timestamps null: false
     end
 
     create_table :active_record_survey_nodes do |t|
+      t.references :active_record_survey
       t.string :type
+      t.string :text
 
       t.timestamps null: false
     end

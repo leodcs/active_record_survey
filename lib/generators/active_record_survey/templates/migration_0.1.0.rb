@@ -3,6 +3,7 @@
 class AddActiveRecordSurvey < ActiveRecord::Migration[4.2]
   def self.up
     create_table :active_record_surveys do |t|
+      t.string :title
       t.timestamps null: false
     end
 

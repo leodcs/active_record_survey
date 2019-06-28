@@ -95,7 +95,7 @@ module ActiveRecordSurvey
           end
         end
 
-        true
+        answers.last
       end
     end
 

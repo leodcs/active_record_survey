@@ -2,6 +2,12 @@
 
 module ActiveRecordSurvey
   class Node::Question < Node
+    scope :not_hidden, -> do
+      left_outer_joins(:node_maps)
+        .where('active_record_survey_node_maps.id IS NULL
+               OR active_record_survey_node_maps.depth = 0')
+    end
+
     # Stop validating at the Question node
     def validate_parent_instance_node(instance_node, _child_node)
       !node_validations.collect do |node_validation|
@@ -70,8 +76,8 @@ module ActiveRecordSurvey
       # Cannot mix answer types
       # Check if not match existing - throw error
       unless answers.reject do |answer|
-               answer.class == answer_node.class
-             end.empty?
+        answer.class == answer_node.class
+      end.empty?
         raise ArgumentError, 'Cannot mix answer types on question'
       end
 
@@ -159,6 +165,6 @@ module ActiveRecordSurvey
       end
 
       true
-     end
+    end
   end
 end

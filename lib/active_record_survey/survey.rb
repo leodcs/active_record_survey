@@ -7,12 +7,6 @@ module ActiveRecordSurvey
     has_many :nodes, class_name: 'ActiveRecordSurvey::Node', foreign_key: :active_record_survey_id
     has_many :questions, class_name: 'ActiveRecordSurvey::Node::Question', foreign_key: :active_record_survey_id
 
-    def root_questions
-      node_maps.includes(:node)
-               .select { |i| i.depth.zero? }
-               .map(&:node)
-    end
-
     # Builds first question
     def build_first_question(question_node)
       unless question_node.class.ancestors.include?(::ActiveRecordSurvey::Node::Question)

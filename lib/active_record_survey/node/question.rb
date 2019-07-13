@@ -8,6 +8,12 @@ module ActiveRecordSurvey
                OR active_record_survey_node_maps.depth = 0')
     end
 
+    def required?
+      node_validations.any? do |validation|
+        validation.type == 'ActiveRecordSurvey::NodeValidation::Presence'
+      end
+    end
+
     # Stop validating at the Question node
     def validate_parent_instance_node(instance_node, _child_node)
       !node_validations.collect do |node_validation|

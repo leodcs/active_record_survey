@@ -8,6 +8,10 @@ module ActiveRecordSurvey
                OR active_record_survey_node_maps.depth = 0')
     end
 
+    def hidden?
+      node_maps.present? && node_maps.none? { |map| map.depth.zero? }
+    end
+
     def required?
       node_validations.any? do |validation|
         validation.type == 'ActiveRecordSurvey::NodeValidation::Presence'

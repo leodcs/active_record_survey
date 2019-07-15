@@ -18,19 +18,14 @@ module ActiveRecordSurvey
       if node.nil?
         instance_node.errors[:base] << 'INVALID_NODE'
       else
-        # This instance_node has no valid path to the root node
-        unless node.instance_node_path_to_root?(self)
-          instance_node.errors[:base] << 'INVALID_PATH'
-        end
-
         parent_nodes = node.survey.node_maps.select { |i| i.node == node }.collect(&:parent)
 
         # Two instance_nodes on the same node for this instance
         if instance.instance_nodes.reject(&:marked_for_destruction?).reject do |i|
-             # And the two arrays
-             # Two votes share a parent (this means a question has two answers for this instance)
-             (i.node.survey.node_maps.select { |j| i.node == j.node }.collect(&:parent) & parent_nodes).empty?
-           end.length > 1
+          # And the two arrays
+          # Two votes share a parent (this means a question has two answers for this instance)
+          (i.node.survey.node_maps.select { |j| i.node == j.node }.collect(&:parent) & parent_nodes).empty?
+        end.length > 1
           instance_node.errors[:base] << 'DUPLICATE_PATH'
         end
 

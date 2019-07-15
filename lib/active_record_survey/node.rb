@@ -14,7 +14,7 @@ module ActiveRecordSurvey
     def answers
       nm = survey.node_maps
 
-      next_answer_nodes = lambda { |node, list|
+      next_answer_nodes = ->(node, list) {
         nm.select do |node_map|
           !node_map.parent.nil? && node_map.parent.node == node && node_map.node.class.ancestors.include?(::ActiveRecordSurvey::Node::Answer) && !node_map.marked_for_destruction?
         end.reject do |i|

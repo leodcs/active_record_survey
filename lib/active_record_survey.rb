@@ -21,6 +21,7 @@ require 'active_record_survey/node/answer/rank'
 require 'active_record_survey/node/answer/scale'
 require 'active_record_survey/node/answer/boolean'
 require 'active_record_survey/node/answer/dropdown'
+require 'active_record_survey/node/answer/comment'
 
 require 'active_record_survey/node_map'
 

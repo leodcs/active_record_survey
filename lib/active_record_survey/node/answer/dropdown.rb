@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module ActiveRecordSurvey
-  class Node::Answer::Radiogroup < Node::Answer
+  class Node::Answer::Dropdown < Node::Answer
   end
 end

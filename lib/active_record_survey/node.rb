@@ -143,13 +143,6 @@ module ActiveRecordSurvey
 
       from_node_maps = survey.node_maps.select { |i| i.node == self && !i.marked_for_destruction? }
 
-      # Answer has already got a question - throw error
-      unless from_node_maps.reject do |i|
-        i.children.empty?
-      end.empty?
-        raise 'This node has already been linked'
-      end
-
       # Because we need something to clone - filter this further below
       to_node_maps = survey.node_maps.select { |i| i.node == to_node && !i.marked_for_destruction? }
 

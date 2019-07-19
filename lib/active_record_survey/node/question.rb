@@ -92,27 +92,26 @@ module ActiveRecordSurvey
       end
 
       # Answers actually define how they're built off the parent node
-      if answer_node.send(:build_answer, self)
+      return unless answer_node.send(:build_answer, self)
 
-        # If any questions existed directly following this question, insert after this answer
-        survey.node_maps.select do |i|
-          i.node == answer_node && !i.marked_for_destruction?
-        end.each do |answer_node_map|
-          survey.node_maps.select do |j|
-            # Same parent
-            # Is a question
-            !j.marked_for_destruction? &&
-              j.parent == answer_node_map.parent && j.node.class.ancestors.include?(::ActiveRecordSurvey::Node::Question)
-          end.each do |j|
-            answer_node_map.survey = survey
-            j.survey = survey
+      # If any questions existed directly following this question, insert after this answer
+      survey.node_maps.select do |i|
+        i.node == answer_node && !i.marked_for_destruction?
+      end.each do |answer_node_map|
+        survey.node_maps.select do |j|
+          # Same parent
+          # Is a question
+          !j.marked_for_destruction? &&
+            j.parent == answer_node_map.parent && j.node.class.ancestors.include?(::ActiveRecordSurvey::Node::Question)
+        end.each do |j|
+          answer_node_map.survey = survey
+          j.survey = survey
 
-            answer_node_map.children << j
-          end
+          answer_node_map.children << j
         end
-
-        answers.last
       end
+
+      answers.last
     end
 
     # Removes the node_map link from this question all of its next questions

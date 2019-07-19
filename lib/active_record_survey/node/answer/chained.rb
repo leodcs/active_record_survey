@@ -36,52 +36,6 @@ module ActiveRecordSurvey
           end
         end
 
-        # Chain nodes are different - they must find the final answer node added and add to it
-        # They must also see if the final answer node then points somewhere else - and fix the links on that
-        def build_answer(question_node)
-          self.survey = question_node.survey
-
-          question_node_maps = survey.node_maps.select do |i|
-            i.node == question_node && !i.marked_for_destruction?
-          end
-
-          answer_node_maps = survey.node_maps.select do |i|
-            i.node == self && i.parent.nil? && !i.marked_for_destruction?
-          end.collect do |i|
-            i.survey = survey
-
-            i
-          end
-
-          # No node_maps exist yet from this question
-          if question_node_maps.length === 0
-            # Build our first node-map
-            question_node_maps << survey.node_maps.build(node: question_node, survey: survey)
-          end
-
-          last_answer_in_chain = (question_node.answers.last || question_node)
-
-          # Each instance of this question needs the answer hung from it
-          survey.node_maps.select do |i|
-            i.node == last_answer_in_chain && !i.marked_for_destruction?
-          end.each_with_index do |node_map, index|
-            new_node_map = answer_node_maps[index] || survey.node_maps.build(node: self, survey: survey)
-
-            # Hack - should fix this - why does self.survey.node_maps still think... yea somethigns not referenced right
-            # curr_children = self.survey.node_maps.select { |j|
-            #  node_map.children.include?(j) && j != new_node_map
-            # }
-
-            node_map.children << new_node_map
-
-            # curr_children.each { |c|
-            #  new_node_map.children << c
-            # }
-          end
-
-          true
-        end
-
         # Moves answer down relative to other answers by swapping parent and children
         def move_up
           # Ensure each parent node to this node (the goal here is to hit a question node) is valid

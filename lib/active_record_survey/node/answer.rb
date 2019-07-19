@@ -151,7 +151,7 @@ module ActiveRecordSurvey
       end.each do |answer_node_map|
         answer_node_map.send(answer_node_map.new_record? ? :destroy : :mark_for_destruction)
       end
-     end
+    end
 
     # By default - answers build off the original question node
     #
@@ -183,6 +183,6 @@ module ActiveRecordSurvey
       end
 
       true
-     end
+    end
   end
 end

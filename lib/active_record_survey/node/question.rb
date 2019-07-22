@@ -2,16 +2,6 @@
 
 module ActiveRecordSurvey
   class Node::Question < Node
-    scope :not_hidden, -> do
-      left_outer_joins(:node_maps)
-        .where('active_record_survey_node_maps.id IS NULL
-               OR active_record_survey_node_maps.depth = 0')
-    end
-
-    def hidden?
-      node_maps.present? && node_maps.none? { |map| map.depth.zero? }
-    end
-
     def required?
       node_validations.any? do |validation|
         validation.type == 'ActiveRecordSurvey::NodeValidation::Presence'
